@@ -11,11 +11,9 @@ It was created as a **centralized reference hub** for PhD applications, but the 
 -  Easy to extend with additional sections (apps, whitepapers, teaching, etc.)  
 -  Smooth animations and hover effects for a modern experience  
 
-## 📸 Preview
-![screenshot](screenshot.png)  
-*(Add a screenshot of your page here)*
 
-## 🚀 Usage
+
+##  Usage
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/phd-portfolio.git
