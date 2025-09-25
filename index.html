@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Portfolio | Turjo Jaman</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #60a5fa;
+            --accent-hover: #3b82f6;
+            --border: #334155;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .theme-icon {
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .link-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+            display: block;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .link-card:hover::before {
+            left: 100%;
+        }
+
+        .link-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .link-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+
+        .link-card:hover .link-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .link-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .link-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .link-url {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .external-icon {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover .external-icon {
+            transform: translate(4px, -4px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .theme-toggle {
+                position: relative;
+                margin: 0 auto 2rem;
+                display: inline-flex;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .link-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* optional initial stagger for first few cards; JS sets inline delays for all */
+        .link-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .link-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .link-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .site-footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 1.5rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            opacity: 0.8;
+        }
+
+        [data-theme="dark"] .site-footer {
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <svg class="theme-icon sun-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <svg class="theme-icon moon-icon" fill="currentColor" viewBox="0 0 20 20" style="display: none;">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+            </div>
+
+            <h1 class="title">PhD Application Portfolio</h1>
+            <p class="subtitle">Exploring the intersection of AI, ML, and distributed systems</p>
+        </header>
+
+        <main class="links-grid" id="links-container">
+            <!-- Links will be dynamically generated here -->
+        </main>
+    </div>
+
+    <footer class="site-footer">
+        © <span id="year"></span> Nur A Jaman · All rights reserved
+    </footer>
+
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        // Updated list with new entries and custom SVG icons
+        const researchLinks = [
+
+            {
+                id: "research-buddy",
+                title: "Research Buddy",
+                description: "A modular ML/AI system for research paper analysis, integrating classification, keyword extraction, summarization, and user libraries. Includes a future development roadmap with conversational LLMs, RAG, and an AI Agent mode.",
+                url: "https://turjo-ml-dl.turjo-jaman.com/research_buddy.html",
+                displayUrl: "turjo-ml-dl.turjo-jaman.com",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                          <path d="M21 21l-4.8-4.8"></path>
+                          <circle cx="10" cy="10" r="6.5"></circle>
+                      </svg>`,
+                isExternal: true
+            },
+            {
+                id: "whitepaper",
+                title: "Science Master BD White Paper",
+                description: "Applying distributed systems principles to scalable EdTech architecture and learning platforms.",
+                url: "https://turjo-jaman.com/blog/applying-distributed-systems-principles-to-edtech-the-architecture-of-sciencemasterbd",
+                displayUrl: "turjo-jaman.com/edtech-white-paper",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                          <path d="M8 4h7l4 4v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"></path>
+                          <path d="M15 4v4h4"></path>
+                          <path d="M9 13h6M9 17h6"></path>
+                      </svg>`,
+                isExternal: true
+            },
+            {
+                id: "ai-notebooks",
+                title: "AI/ML/NLP Notebooks",
+                description: "Experiments, models, and data-science notebooks showcasing ML/NLP/AI implementations.",
+                url: "https://turjo-ml-dl.turjo-jaman.com/",
+                displayUrl: "turjo-ml-dl.turjo-jaman.com",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                          <path d="M5 5h11a3 3 0 013 3v8a3 3 0 01-3 3H5z"></path>
+                          <path d="M5 8h11"></path>
+                          <path d="M8 12h6M8 16h6"></path>
+                      </svg>`,
+                isExternal: true
+            },
+            {
+                id: "scicheck",
+                title: "SciCheck Prototype",
+                description: "Streamlit-based prototype app for research paper classification and similarity analysis.",
+                url: "https://turjo-scicheck.streamlit.app/",
+                displayUrl: "turjo-scicheck.streamlit.app",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+            <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
+            <path d="M3 10h18"></path>
+        </svg>`,
+                isExternal: true
+            }
+            ,
+            {
+                id: "thesis",
+                title: "Undergraduate Thesis Book",
+                description: "Comprehensive undergraduate research thesis; 2016.",
+                url: "https://drive.google.com/file/d/1_5rMSfoXHyhyhQni4Ddod_0GsQnXoG3X/view?usp=sharing",
+                displayUrl: "Google Drive Link",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                          <path d="M12 4l9 5-9 5-9-5 9-5z"></path>
+                          <path d="M12 14l6 3.5V19a8 8 0 01-12 0v-1.5L12 14z"></path>
+                      </svg>`,
+                isExternal: true,
+
+            },
+            {
+                id: "hsc-dojo",
+                title: "HSC Dojo",
+                description: "Bangladesh’s first fully functioning EdTech platform during COVID-19, designed to support HSC students with structured digital learning and exam prep.",
+                url: "https://drive.google.com/file/d/1s6e_R1UA3BZNF1WSaGjRfEwRbSCGQrw_/view?usp=sharing",
+                displayUrl: "HSC dojo overview",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+            <path d="M4 19.5A2.5 2.5 0 006.5 22h11a2.5 2.5 0 002.5-2.5V6H4z"></path>
+            <path d="M16 2v4H8V2"></path>
+        </svg>`,
+                isExternal: true
+            }
+            ,
+            {
+                id: "personal-website",
+                title: "Personal Website",
+                description: "Portfolio, projects, publications, and contact—my central hub.",
+                url: "https://turjo-jaman.com",
+                displayUrl: "turjo-jaman.com",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" aria-hidden="true">
+                          <path d="M3 10.5l9-7 9 7"></path>
+                          <path d="M5.25 9.75v9a1.5 1.5 0 001.5 1.5H9.75V15a1.5 1.5 0 011.5-1.5h1.5A1.5 1.5 0 0114.25 15v5.25H17.25a1.5 1.5 0 001.5-1.5v-9"></path>
+                      </svg>`,
+                isExternal: true
+            },
+            {
+                id: "professional-experience",
+                title: "Professional Experience",
+                description: "Work experience timeline, roles, and impact across companies and labs.",
+                url: "https://turjo-jaman.com/work-experience",
+                displayUrl: "turjo-jaman.com/work-experience",
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" aria-hidden="true">
+                          <path d="M9 7.5V6a3 3 0 016 0v1.5"></path>
+                          <path d="M3.75 9.75h16.5a1.5 1.5 0 011.5 1.5v6.75a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18V11.25a1.5 1.5 0 011.5-1.5z"></path>
+                          <path d="M8.25 13.5h7.5"></path>
+                      </svg>`,
+                isExternal: true
+            }
+        ];
+
+        function renderLinks() {
+            const container = document.getElementById('links-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            researchLinks.forEach((link, index) => {
+                const linkElement = document.createElement('a');
+                linkElement.className = 'link-card';
+                linkElement.style.animationDelay = `${index * 0.1}s`;
+
+                if (link.isExternal) {
+                    linkElement.href = link.url;
+                    linkElement.target = '_blank';
+                    linkElement.rel = 'noopener noreferrer';
+                } else {
+                    linkElement.href = link.url;
+                    if (link.customClick) linkElement.onclick = (e) => handleThesisClick(e);
+                }
+
+                linkElement.innerHTML = `
+                    <div class="link-icon">${link.icon}</div>
+                    <h2 class="link-title">${link.title}</h2>
+                    <p class="link-description">${link.description}</p>
+                    <div class="link-url">
+                        ${link.displayUrl}
+                        <svg class="external-icon" fill="currentColor" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
+                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
+                        </svg>
+                    </div>
+                `;
+
+                container.appendChild(linkElement);
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const sunIcon = document.querySelector('.sun-icon');
+            const moonIcon = document.querySelector('.moon-icon');
+
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                if (sunIcon && moonIcon) { sunIcon.style.display = 'block'; moonIcon.style.display = 'none'; }
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                if (sunIcon && moonIcon) { sunIcon.style.display = 'none'; moonIcon.style.display = 'block'; }
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            renderLinks();
+
+            const savedTheme = localStorage.getItem('theme');
+            const sunIcon = document.querySelector('.sun-icon');
+            const moonIcon = document.querySelector('.moon-icon');
+
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                if (sunIcon && moonIcon) { sunIcon.style.display = 'none'; moonIcon.style.display = 'block'; }
+            } else {
+                if (sunIcon && moonIcon) { sunIcon.style.display = 'block'; moonIcon.style.display = 'none'; }
+            }
+        });
+
+        // Safety: second render if needed
+        setTimeout(renderLinks, 1000);
+    </script>
+</body>
+
+</html>
