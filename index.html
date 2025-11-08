@@ -101,11 +101,53 @@
             font-weight: 400;
         }
 
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
         .links-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
         }
 
         .link-card {
@@ -245,6 +287,15 @@
             .link-card {
                 padding: 1.5rem;
             }
+
+            .tabs-container {
+                gap: 0.5rem;
+            }
+
+            .tab-button {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+            }
         }
 
         @keyframes fadeInUp {
@@ -252,23 +303,19 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .link-card:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .link-card:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .link-card:nth-child(4) {
-            animation-delay: 0.3s;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .site-footer {
@@ -279,10 +326,6 @@
             color: var(--text-secondary);
             border-top: 1px solid var(--border);
             opacity: 0.8;
-        }
-
-        [data-theme="dark"] .site-footer {
-            border-top: 1px solid var(--border);
         }
     </style>
 </head>
@@ -305,8 +348,19 @@
             <p class="subtitle">Exploring the intersection of AI, ML, and distributed systems</p>
         </header>
 
-        <main class="links-grid" id="links-container">
-            <!-- Links will be dynamically generated here -->
+        <div class="tabs-container">
+            <button class="tab-button active" onclick="switchTab('research')">Research & Projects</button>
+            <button class="tab-button" onclick="switchTab('coding')">Coding Projects</button>
+        </div>
+
+        <main>
+            <div id="research-tab" class="tab-content active">
+                <div class="links-grid" id="research-links"></div>
+            </div>
+
+            <div id="coding-tab" class="tab-content">
+                <div class="links-grid" id="coding-links"></div>
+            </div>
         </main>
     </div>
 
@@ -314,13 +368,11 @@
         © <span id="year"></span> Nur A Jaman · All rights reserved
     </footer>
 
-
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
-        
+
         const researchLinks = [
             {
-                id: "research-buddy",
                 title: "Research Buddy",
                 description: "A modular ML/AI system for research paper analysis, integrating classification, keyword extraction, summarization, and user libraries. Includes a future development roadmap with conversational LLMs, RAG, and an AI Agent mode.",
                 url: "https://turjo-ml-dl.turjo-jaman.com/research_buddy.html",
@@ -329,11 +381,9 @@
                           <path d="M21 21l-4.8-4.8"></path>
                           <circle cx="10" cy="10" r="6.5"></circle>
                       </svg>`,
-                isExternal: true,
                 featured: true
             },
             {
-                id: "whitepaper",
                 title: "Science Master BD White Paper",
                 description: "Applying distributed systems principles to scalable EdTech architecture and learning platforms.",
                 url: "https://turjo-jaman.com/blog/applying-distributed-systems-principles-to-edtech-the-architecture-of-sciencemasterbd",
@@ -343,11 +393,9 @@
                           <path d="M15 4v4h4"></path>
                           <path d="M9 13h6M9 17h6"></path>
                       </svg>`,
-                isExternal: true,
                 featured: true
             },
             {
-                id: "ai-notebooks",
                 title: "AI/ML/NLP Notebooks",
                 description: "Experiments, models, and data-science notebooks showcasing ML/NLP/AI implementations.",
                 url: "https://turjo-ml-dl.turjo-jaman.com/",
@@ -357,23 +405,19 @@
                           <path d="M5 8h11"></path>
                           <path d="M8 12h6M8 16h6"></path>
                       </svg>`,
-                isExternal: true,
                 featured: true
             },
             {
-                id: "scicheck",
                 title: "SciCheck Prototype",
                 description: "Streamlit-based prototype app for research paper classification and similarity analysis.",
                 url: "https://turjo-scicheck.streamlit.app/",
                 displayUrl: "turjo-scicheck.streamlit.app",
                 icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
-            <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
-            <path d="M3 10h18"></path>
-        </svg>`,
-                isExternal: true
+                    <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
+                    <path d="M3 10h18"></path>
+                </svg>`
             },
             {
-                id: "thesis",
                 title: "Undergraduate Thesis Book",
                 description: "Comprehensive undergraduate research thesis; 2016.",
                 url: "https://drive.google.com/file/d/1_5rMSfoXHyhyhQni4Ddod_0GsQnXoG3X/view?usp=sharing",
@@ -381,65 +425,95 @@
                 icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
                           <path d="M12 4l9 5-9 5-9-5 9-5z"></path>
                           <path d="M12 14l6 3.5V19a8 8 0 01-12 0v-1.5L12 14z"></path>
-                      </svg>`,
-                isExternal: true
+                      </svg>`
             },
             {
-                id: "hsc-dojo",
                 title: "HSC Dojo",
                 description: "Bangladesh's first fully functioning EdTech platform during COVID-19, designed to support HSC students with structured digital learning and exam prep.",
                 url: "https://drive.google.com/file/d/1s6e_R1UA3BZNF1WSaGjRfEwRbSCGQrw_/view?usp=sharing",
                 displayUrl: "HSC dojo overview",
                 icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
-            <path d="M4 19.5A2.5 2.5 0 006.5 22h11a2.5 2.5 0 002.5-2.5V6H4z"></path>
-            <path d="M16 2v4H8V2"></path>
-        </svg>`,
-                isExternal: true
+                    <path d="M4 19.5A2.5 2.5 0 006.5 22h11a2.5 2.5 0 002.5-2.5V6H4z"></path>
+                    <path d="M16 2v4H8V2"></path>
+                </svg>`
             },
             {
-                id: "personal-website",
                 title: "Personal Website",
                 description: "Portfolio, projects, publications, and contact—my central hub.",
                 url: "https://turjo-jaman.com",
                 displayUrl: "turjo-jaman.com",
-                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" aria-hidden="true">
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
                           <path d="M3 10.5l9-7 9 7"></path>
                           <path d="M5.25 9.75v9a1.5 1.5 0 001.5 1.5H9.75V15a1.5 1.5 0 011.5-1.5h1.5A1.5 1.5 0 0114.25 15v5.25H17.25a1.5 1.5 0 001.5-1.5v-9"></path>
-                      </svg>`,
-                isExternal: true
+                      </svg>`
             },
             {
-                id: "professional-experience",
                 title: "Professional Experience",
                 description: "Work experience timeline, roles, and impact across companies and labs.",
                 url: "https://turjo-jaman.com/work-experience",
                 displayUrl: "turjo-jaman.com/work-experience",
-                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" aria-hidden="true">
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
                           <path d="M9 7.5V6a3 3 0 016 0v1.5"></path>
                           <path d="M3.75 9.75h16.5a1.5 1.5 0 011.5 1.5v6.75a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18V11.25a1.5 1.5 0 011.5-1.5z"></path>
                           <path d="M8.25 13.5h7.5"></path>
-                      </svg>`,
-                isExternal: true
+                      </svg>`
             }
         ];
 
-        function renderLinks() {
-            const container = document.getElementById('links-container');
+        const codingLinks = [
+            {
+                title: "Research Buddy MVP Backend",
+                description: "FastAPI backend for research paper analysis with ML models, classification, and similarity search.",
+                url: "https://github.com/Tj-jm/research-buddy-mvp-backend",
+                displayUrl: "github.com/Tj-jm/research-buddy-mvp-backend",
+                icon: `<svg viewBox="0 0 24 24" fill="white" width="24" height="24">
+                          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                      </svg>`,
+                featured: true
+            },
+            {
+                title: "AI-ML-DL Notebook Collection",
+                description: "Comprehensive collection of Jupyter notebooks covering various AI, ML, and DL topics with practical implementations.",
+                url: "https://github.com/Tj-jm/AI-ML-DL-notebook-collection",
+                displayUrl: "github.com/Tj-jm/AI-ML-DL-notebook-collection",
+                icon: `<svg viewBox="0 0 24 24" fill="white" width="24" height="24">
+                          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                      </svg>`,
+                featured: true
+            },
+            {
+                title: "Research Buddy MVP Frontend",
+                description: "React-based frontend for Research Buddy with modern UI and interactive features.",
+                url: "https://github.com/Tj-jm/research-buddy-mvp-frontend",
+                displayUrl: "github.com/Tj-jm/research-buddy-mvp-frontend",
+                icon: `<svg viewBox="0 0 24 24" fill="white" width="24" height="24">
+                          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                      </svg>`,
+                featured: true
+            },
+            {
+                title: "GitHub Profile",
+                description: "Explore all my coding projects, contributions, and open-source work on GitHub.",
+                url: "https://github.com/Tj-jm",
+                displayUrl: "github.com/Tj-jm",
+                icon: `<svg viewBox="0 0 24 24" fill="white" width="24" height="24">
+                          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                      </svg>`
+            }
+        ];
+
+        function renderLinks(links, containerId) {
+            const container = document.getElementById(containerId);
             if (!container) return;
 
             container.innerHTML = '';
-            researchLinks.forEach((link, index) => {
+            links.forEach((link, index) => {
                 const linkElement = document.createElement('a');
                 linkElement.className = link.featured ? 'link-card featured' : 'link-card';
                 linkElement.style.animationDelay = `${index * 0.1}s`;
-
-                if (link.isExternal) {
-                    linkElement.href = link.url;
-                    linkElement.target = '_blank';
-                    linkElement.rel = 'noopener noreferrer';
-                } else {
-                    linkElement.href = link.url;
-                }
+                linkElement.href = link.url;
+                linkElement.target = '_blank';
+                linkElement.rel = 'noopener noreferrer';
 
                 linkElement.innerHTML = `
                     <div class="link-icon">${link.icon}</div>
@@ -447,7 +521,7 @@
                     <p class="link-description">${link.description}</p>
                     <div class="link-url">
                         ${link.displayUrl}
-                        <svg class="external-icon" fill="currentColor" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+                        <svg class="external-icon" fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
                             <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
                             <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
                         </svg>
@@ -458,6 +532,17 @@
             });
         }
 
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-button');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
         function toggleTheme() {
             const body = document.body;
             const sunIcon = document.querySelector('.sun-icon');
@@ -465,23 +550,24 @@
 
             if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
-                if (sunIcon && moonIcon) { 
-                    sunIcon.style.display = 'block'; 
-                    moonIcon.style.display = 'none'; 
+                if (sunIcon && moonIcon) {
+                    sunIcon.style.display = 'block';
+                    moonIcon.style.display = 'none';
                 }
                 localStorage.setItem('theme', 'light');
             } else {
                 body.setAttribute('data-theme', 'dark');
-                if (sunIcon && moonIcon) { 
-                    sunIcon.style.display = 'none'; 
-                    moonIcon.style.display = 'block'; 
+                if (sunIcon && moonIcon) {
+                    sunIcon.style.display = 'none';
+                    moonIcon.style.display = 'block';
                 }
                 localStorage.setItem('theme', 'dark');
             }
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            renderLinks();
+            renderLinks(researchLinks, 'research-links');
+            renderLinks(codingLinks, 'coding-links');
 
             const savedTheme = localStorage.getItem('theme');
             const sunIcon = document.querySelector('.sun-icon');
@@ -489,19 +575,17 @@
 
             if (savedTheme === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
-                if (sunIcon && moonIcon) { 
-                    sunIcon.style.display = 'none'; 
-                    moonIcon.style.display = 'block'; 
+                if (sunIcon && moonIcon) {
+                    sunIcon.style.display = 'none';
+                    moonIcon.style.display = 'block';
                 }
             } else {
-                if (sunIcon && moonIcon) { 
-                    sunIcon.style.display = 'block'; 
-                    moonIcon.style.display = 'none'; 
+                if (sunIcon && moonIcon) {
+                    sunIcon.style.display = 'block';
+                    moonIcon.style.display = 'none';
                 }
             }
         });
-
-        setTimeout(renderLinks, 1000);
     </script>
 </body>
 
